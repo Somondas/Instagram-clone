@@ -26,8 +26,8 @@ export const tabIcons = [
   },
   {
     name: "Profile",
-    active: "https://instagram.fgau1-2.fna.fbcdn.net/v/t51.2885-19/287074904_391789372981689_3474324017413615994_n.jpg?stp=dst-jpg_s150x150&_nc_ht=instagram.fgau1-2.fna.fbcdn.net&_nc_cat=109&_nc_ohc=DKCdx1jjilIAX9aguui&tn=f0I_owuBY12wNu-W&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AT9UKYAivua-Syp7_ZSew9IbCUqS5MbjkDfuHWmfhhEk8A&oe=62DD16A4&_nc_sid=8fd12b",
-    inactive: "https://instagram.fgau1-2.fna.fbcdn.net/v/t51.2885-19/287074904_391789372981689_3474324017413615994_n.jpg?stp=dst-jpg_s150x150&_nc_ht=instagram.fgau1-2.fna.fbcdn.net&_nc_cat=109&_nc_ohc=DKCdx1jjilIAX9aguui&tn=f0I_owuBY12wNu-W&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AT9UKYAivua-Syp7_ZSew9IbCUqS5MbjkDfuHWmfhhEk8A&oe=62DD16A4&_nc_sid=8fd12b",
+    active: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80",
+    inactive: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80",
   }
 ]
 

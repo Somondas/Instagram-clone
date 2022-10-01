@@ -9,7 +9,7 @@ const header = ({navigation}) => {
                 <Image style={styles.logo} source={require('../../assets/logo.png')} />
             </TouchableOpacity>
             <View style={styles.iconsContainer} >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() =>{navigation.push("NewPostScreen")}}>
                     <Image style={styles.icon} source={require("../../assets/post.png")} />
                 </TouchableOpacity>
                 <TouchableOpacity>
