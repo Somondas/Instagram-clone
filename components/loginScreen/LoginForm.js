@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from 'react-native-elements'
 import { Pressable } from 'react-native'
 import { TouchableOpacity } from 'react-native'
@@ -8,43 +8,56 @@ import * as Yup from "yup"
 import { Validator } from 'email-validator'
 // |                                                                                                 
 const LoginForm = () => {
+    const LoginFormSchema = Yup.object().shape({
+        email: Yup.string().email().required("An email is requred"),
+        password: Yup.string().required().min(8, "Password must contain at least 8 character")
+    })
     return (
         <View style={styles.wrapper}>
-            <View style={styles.inputField}>
-                <TextInput
-                    placeholderTextColor="#444"
-                    placeholder="Phone Number, username or email"
-                    autoCapitalize='none'
-                    keyboardType='email-address'
-                    textContentType='emailAddress'
-                    autoFocus={true}
-                />
-            </View>
-            <View style={styles.inputField}>
-                <TextInput
-                    placeholderTextColor="#444"
-                    placeholder="Password"
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    keyboardType="password"
-                    textContentType='password'
-                />
+            <Formik
+            initialValues={{email: "", password: "",}}
+            onSubmit={val =>{
+                console.log(val);
+            }}
+            validationSchema={LoginFormSchema}
+            validateOnMount={true}
+            >
+                <View style={styles.inputField}>
+                    <TextInput
+                        placeholderTextColor="#444"
+                        placeholder="Phone Number, username or email"
+                        autoCapitalize='none'
+                        keyboardType='email-address'
+                        textContentType='emailAddress'
+                        autoFocus={true}
+                    />
+                </View>
+                <View style={styles.inputField}>
+                    <TextInput
+                        placeholderTextColor="#444"
+                        placeholder="Password"
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        keyboardType="password"
+                        textContentType='password'
+                    />
 
-            </View>
-            <View style={{ alignItems: "flex-end", marginBottom: 30, }}>
-                <Text style={{ color: "#6bb0f5" }}>Forgot Password?</Text>
-            </View>
-            <Pressable titleSize={20} style={styles.button}>
-                <Text style={styles.buttonText}>Log In</Text>
-            </Pressable>
-            <View style={styles.signupContainer}>
+                </View>
+                <View style={{ alignItems: "flex-end", marginBottom: 30, }}>
+                    <Text style={{ color: "#6bb0f5" }}>Forgot Password?</Text>
+                </View>
+                <Pressable titleSize={20} style={styles.button}>
+                    <Text style={styles.buttonText}>Log In</Text>
+                </Pressable>
+                <View style={styles.signupContainer}>
 
-            <Text>Don't have an account?</Text>
-            <TouchableOpacity>
-                <Text style={{ color: "#6bb0f5"}}>Sign In</Text>
-            </TouchableOpacity>
-            </View>
+                    <Text>Don't have an account?</Text>
+                    <TouchableOpacity>
+                        <Text style={{ color: "#6bb0f5" }}>Sign In</Text>
+                    </TouchableOpacity>
+                </View>
+            </Formik>
         </View>
     )
 }
@@ -71,7 +84,7 @@ const styles = StyleSheet.create({
         padding: 12,
         borderRadius: 4,
     },
-    buttonText:{
+    buttonText: {
         fontSize: 16,
         color: "#fff",
         fontWeight: "600"
@@ -83,4 +96,4 @@ const styles = StyleSheet.create({
         marginTop: 50
     }
 })
-export default LoginForm
+export default LoginForm;
