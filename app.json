@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "instagram-clone",
+    "slug": "instagram-clone",
+    "version": "1.0.0",
+    "sdkVersion": "46.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ]
+  }
+}

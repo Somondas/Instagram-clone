@@ -18,14 +18,30 @@ const LoginForm = ({navigation}) => {
             await firebase.auth().signInWithEmailAndPassword(email, password)
             console.log("Firebase login successful", email, password);
         }catch(err){
-            Alert.alert(err.message)
+            Alert.alert(
+                'Invalid',
+                err.message + '\n\n What would you do next?',
+                [
+                    {
+                        text: "OK",
+                        onPress: () => navigation.push('LoginScreen'),
+                        style: "cancel"
+                    },
+                    {
+                        text: "Sign In",
+                        onPress: () => navigation.push('SignUpScreen') 
+                    }
+                ]
+            )
         }
     }
     return (
         <View style={styles.wrapper}>
             <Formik
                 initialValues={{ email: "", password: "", }}
-               
+               onSubmit={values =>{
+                onLogin(values.email, values.password)
+               }}
                 validationSchema={LoginFormSchema}
                 validateOnMount={true}
             >
