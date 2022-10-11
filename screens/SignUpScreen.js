@@ -1,19 +1,18 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
-import LoginForm from '../components/loginScreen/LoginForm'
-
+import SignUpForm from '../components/signInScreen/SignUpForm'
+// |||||||                                                                                                              
 const INSTAGRAM_LOGO = "https://instagram-clone-assets-somondas.netlify.app/instagram-logo.png"
-const LoginScreen = ({navigation}) => {
+const SignUPForm = ({navigation}) => {
   return (
     <View style={styles.container}>
         <View style={styles.imgStyle}>
             <Image source={{ uri: INSTAGRAM_LOGO, height: 100, width: 100}}/>
         </View>
-        <LoginForm navigation={navigation} />
+        <SignUpForm navigation={navigation} />
     </View>
   )
 }
-// >> StyleSheet |||||||||||||
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
@@ -29,4 +28,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default LoginScreen;
+export default SignUPForm;
