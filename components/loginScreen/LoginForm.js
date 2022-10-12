@@ -6,13 +6,15 @@ import { TouchableOpacity } from 'react-native'
 import { Formik } from 'formik'
 import * as Yup from "yup"
 import { Validator } from 'email-validator';
-import firebase from '../../firebase'
+import {firebase} from '../../firebase'
 // |                                                                                                 
 const LoginForm = ({navigation}) => {
+    // ? Login Form schema
     const LoginFormSchema = Yup.object().shape({
         email: Yup.string().email().required("An email is requred"),
         password: Yup.string().required().min(6, "Password must contain at least 8 character")
     })
+    // ? Form data submission to firebase
     const onLogin = async(email, password) =>{
         try{
             await firebase.auth().signInWithEmailAndPassword(email, password)

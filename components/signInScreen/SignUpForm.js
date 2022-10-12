@@ -6,6 +6,8 @@ import { TouchableOpacity } from 'react-native'
 import { Formik } from 'formik'
 import * as Yup from "yup"
 import { Validator } from 'email-validator';
+import { Alert } from 'react-native'
+import {firebase, db} from "../../firebase";
 // |                                                                                                
 
 const SignUpForm = ({ navigation }) => {
@@ -14,11 +16,34 @@ const SignUpForm = ({ navigation }) => {
         username: Yup.string().required().min(2, "An Username is required"),
         password: Yup.string().required().min(6, "Password must contain at least 8 character")
     })
+    // ? Get random Profile Picture whenever a user Sign In
+
+    const getRandomProfilePicture = async () =>{
+        const response = await fetch("https://randomuser.me/api")
+        const data = await response.json()
+        return data.results[0].picture.large
+    }
+    // ? Form data submission to firebase
+    const onSignUp = async (email, password, username) =>{
+        try{
+            const authUser = await firebase.auth().createUserWithEmailAndPassword(email, password)
+            Alert.alert("Account created successfully")
+            db.collection("users").add({
+                owner_uid: authUser.user.uid,
+                username: username,
+                email: authUser.user.email,
+                profile_picture: await getRandomProfilePicture(),
+
+            })
+        }catch(err){
+            Alert.alert("Invalid", err.message)
+        }
+    }
     return (
         <View style={styles.wrapper}>
             <Formik
                 initialValues={{ email: "", username: "", password: "", }}
-
+                onSubmit={values => onSignUp(values.email, values.password, values.username)}
                 validationSchema={SignUpFormSchema}
                 validateOnMount={true}
             >
@@ -75,6 +100,7 @@ const SignUpForm = ({ navigation }) => {
                         </View>
                         <Pressable
                             onPress={handleSubmit}
+                            
                             titleSize={20}
                             style={styles.button(isValid)}
                             disabled={!isValid}
