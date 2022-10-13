@@ -26,7 +26,7 @@ const LoginForm = ({navigation}) => {
                 [
                     {
                         text: "OK",
-                        onPress: () => navigation.push('LoginScreen'),
+                        onPress: () => navigation.popToTop(),
                         style: "cancel"
                     },
                     {
