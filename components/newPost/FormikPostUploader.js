@@ -17,46 +17,47 @@ const uploadPostSchema = Yup.object().shape({
 })
 const FormikPostUploader = ({ navigation }) => {
   const [thumbnails, setThumbnails] = useState(PLACEHOLDER_IMG);
-  const [currentLogedInUser, setCurrentLogedInUser] = useState(null);
+  const [currentLoggedInUser, setCurrentLoggedInUser] = useState({username: "not-working-fun", profilePicture: "not-working-fun"});
 
   // ? Get User Name 
   const getUserName = () => {
     const user = firebase.auth().currentUser
-    const unsubcribed = db
+    const unsubcribe = db
       .collection("users")
-      .where("owner_uid", "===", user.uid).limit(1).onSnapshot(
+      .where("owner_uid", "==", user.uid).limit(1).onSnapshot(
         snapshot => snapshot.docs.map(doc => {
-          setCurrentLogedInUser({
+          setCurrentLoggedInUser({
             username: doc.data().username,
-            profilePicture: doc.data().profile_picture
+            profilePicture: doc.data().profile_picture,
           })
         })
       )
-    return unsubcribed
+    return unsubcribe
   }
   // ** Get the Username
-  useEffect(() =>{
+  useEffect(() => {
     getUserName()
   }, [])
   // ? Upload Post To Firebase 
 
-  const uploadPostToFirebase = (imageUrl, caption) =>{
+  const uploadPostToFirebase = (imageUrl, caption) => {
     const unsubcribed = db
-    .collection("users")
-    .doc(firebase.auth().currentUser.email)
-    .collection('posts')
-    .add({
-      imageUrl: imageUrl,
-      user: currentLogedInUser.username,
-      profile_picture: currentLogedInUser.profilePicture,
-      owner_uid: firebase.auth().currentUser.uid,
-      caption: caption,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      likes: 0,
-      likes_by_users: [],
-      comments: [],
-    })
-    .then(() => navigation.goBack())
+      .collection("users")
+      .doc(firebase.auth().currentUser.email)
+      .collection('posts')
+      .add({
+        imageUrl: imageUrl,
+        user: currentLoggedInUser.username,
+        profile_picture: currentLoggedInUser.profilePicture,
+        owner_uid: firebase.auth().currentUser.uid,
+        caption: caption,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        likes: 0,
+        likes_by_users: [],
+        comments: [],
+      })
+      .then(() => navigation.goBack())
+    return unsubcribed
   }
   return (
     <Formik
@@ -83,7 +84,7 @@ const FormikPostUploader = ({ navigation }) => {
                 placeholderTextColor="grey"
                 multiline={true}
                 onChangeText={handleChange('caption')}
-                onBlur={handleChange('caption')}
+                onBlur={handleBlur('caption')}
                 value={values.caption}
               />
             </View>
@@ -96,13 +97,13 @@ const FormikPostUploader = ({ navigation }) => {
             placeholder='Enter Image URL'
             placeholderTextColor="grey"
             onChangeText={handleChange('imageUrl')}
-            onBlur={handleChange('imageUrl')}
+            onBlur={handleBlur('imageUrl')}
             value={values.imageUrl}
           />
           {errors.imageUrl && (
             <Text style={{ fontSize: 10, color: "red" }}>{errors.imageUrl}</Text>
           )}
-          <Button onPress={handleSubmit} title="Share" disabled={isValid} />
+          <Button onPress={handleSubmit} title="Share" />
         </>
 
       )
