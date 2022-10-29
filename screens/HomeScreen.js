@@ -1,5 +1,5 @@
 import { Text, SafeAreaView, StyleSheet, Platform, ScrollView } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { StatusBar } from 'react-native';
 import Header from "../components/home/Header"
 import Stories from '../components/home/Stories';
@@ -9,9 +9,10 @@ import BottomTab, { tabIcons } from '../components/home/BottomTab';
 import {db} from "../firebase";
 // |                                                                                                  
 const HomeScreen = ({navigation}) => {
+  const [posts, setPosts] = useState([]);
   useEffect(() =>{
-    db.collectionGroup('post').onSnapshot(snapshot =>{
-      console.log(snapshot.docs.map(doc => doc.data()))
+    db.collectionGroup('posts').onSnapshot(snapshot =>{
+      setPosts(snapshot.docs.map(doc => doc.data()))
     })
   }, [])
   return (
@@ -20,7 +21,7 @@ const HomeScreen = ({navigation}) => {
       <Stories />
       <ScrollView>
         {
-          POSTS.map((post, index) =>{
+          posts.map((post, index) =>{
             return(
               <Post post={post} key={index}/>
             )

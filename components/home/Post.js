@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect} from 'react'
 import { Divider } from "react-native-elements";
+import {firebase, db} from "../../firebase";
+// |||||||                                                                                        
+
 // ? This is array of object for the post footer component
 const postfooterIcons = [
   {
@@ -21,15 +24,34 @@ const postfooterIcons = [
     imageUrl: "../assets/save-post.png"
   },
 ]
-// ? -------- Array Ends
+// ? -------- Array Ends  
 const Post = ({ post }) => {
+  const handlelike = (post) =>{
+    const currentlikeStatus = !post.likes_by_users.includes(
+      firebase.auth().currentUser.email
+    )
+    db.collection("users")
+    .doc(post.owner_uid)
+    .collection('posts')
+    .doc(post.id)
+    .update({
+      likes_by_users: currentlikeStatus 
+      ? firebase.firestore.FieldValue.arrayUnion(
+        firebase.auth().currentUser.email
+      )
+      : firebase.firestore.FieldValue.arrayRemove(
+        firebase.auth().currentUser.email
+      ),
+
+    })
+  }
   return (
     <View style={{marginBottom: 10}}>
       <Divider width={1} orientation='vertical' />
       <PostHeader post={post} />
       <PostImage post={post} />
       <View style={{ marginHorizontal: 15, marginTop: 10 }}>
-        <PostFooter />
+        <PostFooter  handlelike={handlelike} post={post}/>
         <Likes post={post} />
         <Caption post={post} />
         <CommentSection post={post} />
@@ -54,12 +76,12 @@ const PostHeader = ({ post }) => {
 const PostImage = ({ post }) => {
   return (
     <View style={{ width: "100%", height: 450 }} >
-      <Image source={{ uri: post.imgurl }} style={{ height: "100%", resizeMode: "cover", }} />
+      <Image source={{ uri: post.imageUrl }} style={{ height: "100%", resizeMode: "cover", }} />
     </View>
   )
 }
 // >>For the Footer
-const PostFooter = () => (
+const PostFooter = ({handlelike, post}) => (
   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
     <View style={styles.leftFooterIcon}>
       <Icon imgStyle={styles.footerIcon} imgUrl={require("../../assets/like-post.png")} />
@@ -84,7 +106,7 @@ const Icon = ({ imgStyle, imgUrl }) => {
 const Likes = ({ post }) => {
   return (
     <View style={{ flexDirection: "row", marginTop: 5, }}>
-      <Text style={{ color: "#fff", fontWeight: '600', }}>{post.likes.toLocaleString('en')} likes</Text>
+      <Text style={{ color: "#fff", fontWeight: '600', }}>{post.likes_by_users.length.toLocaleString('en')} likes</Text>
     </View>
   )
 
