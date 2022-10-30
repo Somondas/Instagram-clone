@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React, { useState, useEffect} from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { Divider } from "react-native-elements";
-import {firebase, db} from "../../firebase";
+import { firebase, db } from "../../firebase";
 // |||||||                                                                                        
 
 // ? This is array of object for the post footer component
@@ -26,32 +26,36 @@ const postfooterIcons = [
 ]
 // ? -------- Array Ends  
 const Post = ({ post }) => {
-  const handlelike = (post) =>{
+  const handlelike = (post) => {
     const currentlikeStatus = !post.likes_by_users.includes(
       firebase.auth().currentUser.email
     )
     db.collection("users")
-    .doc(post.owner_uid)
-    .collection('posts')
-    .doc(post.id)
-    .update({
-      likes_by_users: currentlikeStatus 
-      ? firebase.firestore.FieldValue.arrayUnion(
-        firebase.auth().currentUser.email
-      )
-      : firebase.firestore.FieldValue.arrayRemove(
-        firebase.auth().currentUser.email
-      ),
-
-    })
+      .doc(post.owner_email)
+      .collection('posts')
+      .doc(post.id)
+      .update({
+        likes_by_users: currentlikeStatus
+          ? firebase.firestore.FieldValue.arrayUnion(
+            firebase.auth().currentUser.email
+          )
+          : firebase.firestore.FieldValue.arrayRemove(
+            firebase.auth().currentUser.email
+          ),
+      }).then(() => {
+        console.log("Document successfully updated!");
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
   return (
-    <View style={{marginBottom: 10}}>
+    <View style={{ marginBottom: 10 }}>
       <Divider width={1} orientation='vertical' />
       <PostHeader post={post} />
       <PostImage post={post} />
       <View style={{ marginHorizontal: 15, marginTop: 10 }}>
-        <PostFooter  handlelike={handlelike} post={post}/>
+        <PostFooter handlelike={handlelike} post={post} />
         <Likes post={post} />
         <Caption post={post} />
         <CommentSection post={post} />
@@ -81,10 +85,19 @@ const PostImage = ({ post }) => {
   )
 }
 // >>For the Footer
-const PostFooter = ({handlelike, post}) => (
+const PostFooter = ({ handlelike, post }) => (
   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
     <View style={styles.leftFooterIcon}>
-      <Icon imgStyle={styles.footerIcon} imgUrl={require("../../assets/like-post.png")} />
+      <TouchableOpacity onPress={() => handlelike(post)}>
+        <Image imgStyle={styles.footerIcon}
+        style={{ height: 33, width: 33, }} 
+        source={{uri: post.likes_by_users.includes(
+          firebase.auth().currentUser.email
+        ) ? "https://instagram-clone-assets-somondas.netlify.app/like-post-red.png"
+        : "https://instagram-clone-assets-somondas.netlify.app/like-post.png"
+      }} 
+        />
+      </TouchableOpacity>
       <Icon imgStyle={styles.footerIcon} imgUrl={require("../../assets/post-comment.png")} />
       <Icon imgStyle={styles.footerIcon} imgUrl={require("../../assets/share-post.png")} />
     </View>
@@ -115,8 +128,8 @@ const Likes = ({ post }) => {
 const Caption = ({ post }) => (
   <View style={{ marginTop: 5, }}>
     <Text>
-      <Text style={{ fontSize: 16, fontWeight: "600", color: "#fff"}}>{post.user}</Text>
-      <Text style={{ color: "#fff"}}>  {post.caption}</Text>
+      <Text style={{ fontSize: 16, fontWeight: "600", color: "#fff" }}>{post.user}</Text>
+      <Text style={{ color: "#fff" }}>  {post.caption}</Text>
     </Text>
 
   </View>
@@ -134,17 +147,17 @@ const CommentSection = ({ post }) => (
 )
 //>>Comment Component
 
-const Comment = ({ post }) =>(
+const Comment = ({ post }) => (
   <>
-  {post.comments.map((comment, index) =>(
-    <View key={index} style={{flexDirection: "row", marginTop: 5}}>
-      <Text style={{color: "#fff"}}>
-        <Text style={{fontWeight: "600"}}>{comment.user} </Text>
-        {comment.comment}
-      </Text>
-    </View>
-  ))}
-  
+    {post.comments.map((comment, index) => (
+      <View key={index} style={{ flexDirection: "row", marginTop: 5 }}>
+        <Text style={{ color: "#fff" }}>
+          <Text style={{ fontWeight: "600" }}>{comment.user} </Text>
+          {comment.comment}
+        </Text>
+      </View>
+    ))}
+
   </>
 )
 const styles = StyleSheet.create({

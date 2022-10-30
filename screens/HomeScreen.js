@@ -11,8 +11,9 @@ import {db} from "../firebase";
 const HomeScreen = ({navigation}) => {
   const [posts, setPosts] = useState([]);
   useEffect(() =>{
-    db.collectionGroup('posts').onSnapshot(snapshot =>{
-      setPosts(snapshot.docs.map(doc => doc.data()))
+    db.collectionGroup('posts')
+    .onSnapshot(snapshot =>{
+      setPosts(snapshot.docs.map(post => ({id: post.id, ...post.data()})))
     })
   }, [])
   return (
