@@ -33,9 +33,9 @@ export const tabIcons = [
 
 const BottomTab = ({ icons }) => {
   const [activeTab, setactiveTab] = useState("");
-
+  
   const Icon = ({ icon }) => (
-    <TouchableOpacity onPress={() => setactiveTab(icon.name)}>
+    <TouchableOpacity onPress={() => {setactiveTab(icon.name)}}>
       <Image source={{ uri: activeTab === icon.name ? icon.active : icon.inactive }}
         style={[styles.icons,
         icon.name === "Profile" ? styles.profile_picture() : null,

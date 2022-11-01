@@ -1,10 +1,10 @@
 export const USERS = [
     {
-        user: "somondas",
+        user: "angel_of_memories",
         img: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80"
     },
     {
-        user: "bhaskarjya_7",
+        user: "adnomination",
         img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUpy-w9sbRd8XdtJr55c-XkcKYbZVVDonRtA&usqp=CAU"
     },
     {

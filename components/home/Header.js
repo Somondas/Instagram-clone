@@ -18,7 +18,7 @@ const header = ({navigation}) => {
     return (
 
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => handleSignOut()}>
+            <TouchableOpacity >
                 <Image style={styles.logo} source={require('../../assets/logo.png')} />
             </TouchableOpacity>
             <View style={styles.iconsContainer} >
@@ -33,6 +33,9 @@ const header = ({navigation}) => {
                         <Text style={styles.unreadBadgetext}>11</Text>
                     </View>
                     <Image style={styles.icon} source={require("../../assets/messenger.png")} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleSignOut()}>
+                    <Image style={styles.icon} source={require("../../assets/logout.png")} />
                 </TouchableOpacity>
             </View>
         </View>
